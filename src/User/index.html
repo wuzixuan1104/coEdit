@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta http-equiv="Content-Language" content="zh-tw">
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui">
+  <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5200/plugin/style.css">
+
+  <title>Travel Schedule</title>
+  <script language="javascript" type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
+  <script language="javascript" type="text/javascript" src="http://127.0.0.1:5200/plugin/jquery.min.js"></script>
+  <script language="javascript" type="text/javascript" src="http://127.0.0.1:5200/plugin/vue.min.js"></script>
+
+  <script type="text/javascript">
+    $(function () {
+      new Vue({
+        el: '#app',
+        data: {
+          online: 0,
+          title: '',
+          items: [],
+          socket: null,
+        },
+        mounted() {
+          this.socket = io.connect('http://127.0.0.1:5200/', {
+            reconnection: false
+          })
+          this.socket.on('connect', _ => {
+            this.socket.on('online', online => {
+              this.online = online
+            });
+
+            this.socket.on('getItems', payload => this.items = payload);
+            this.socket.on('deleteItem', id => {
+              this.items.splice(this.items.map(item => item.id).indexOf(id), 1);
+            });
+            this.socket.on('createItem', payload => {
+              this.items.push(payload);
+            });
+            this.socket.on('changeItem', (id, payload) => {
+              const idx = this.items.map(item => item.id).indexOf(id);
+              if (idx === -1) return;
+              this.$set(this.items, idx, payload);
+            })
+          })
+
+        },
+        methods: {
+          deleteItem(id) {
+            this.socket.connected && this.socket.emit('deleteItem', id);
+          },
+          createItem() {
+            if (!this.title) return;
+            this.socket.connected && this.socket.emit('createItem', this.title);
+            $("html, body").animate({ scrollTop: $(document).height() }, 500);
+            this.title = '';
+          },
+          changeContent(id, content) {
+            this.socket.connected && this.socket.emit('changeItem', id, content);
+          }
+        }
+      })
+    });
+  </script>
+</head>
+
+<body>
+  <main id='app'>
+    <b class='online'>線上人數：{{ online }}</b>
+    <h1>Travel Schedule</h1>
+    <div id='create'>
+      <span>+ 記事本</span>
+      <form>
+        <input type="text" placeholder="輸入內容 ..." v-model='title'>
+        <a @click='createItem'>新增</a>
+      </form>
+    </div>
+    <div id='list'>
+      <div class='item' v-for="item in items" :key='item.id'>
+        <span>[{{item.id}}] - {{item.date}}</span>
+        <textarea v-model='item.title' @input='changeContent(item.id, item.title)'></textarea>
+        <label @click='deleteItem(item.id)'>&times 刪除</label>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>

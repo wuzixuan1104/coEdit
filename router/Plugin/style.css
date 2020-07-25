@@ -1,0 +1,140 @@
+body {
+  background-color: rgba(47, 52, 55, 1.00);
+}
+
+#app {
+  padding: 20px;
+}
+
+h1 {
+  text-shadow: 1px 1px 1px #ffffff57;
+  color: white;
+}
+
+.online {
+  color: rgba(223, 146, 75, 1.00);
+}
+
+#list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
+  margin-top: 50px;
+}
+
+@media only screen and (max-width: 1000px) {
+  #list {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  #list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  #list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.item {
+  position: relative;
+  display: flex;
+  border: 2px solid rgba(157, 158, 159, 1.00);
+  padding: 10px 12px;
+  flex-direction: column;
+}
+
+.item span {
+  position: relative;
+  background-color: rgba(89, 86, 61, 1.00);
+  padding: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 22px;
+}
+
+.item span:after {
+  position: absolute;
+  display: flex;
+  left: 0;
+  bottom: -10px;
+  content: '';
+  width: 100%;
+  height: 2px;
+  background-color: rgba(56, 60, 63, 1.00);
+}
+
+.item textarea {
+  color: white;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  outline: none;
+  height: 150px;
+  width: 100%;
+  overflow: hidden;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  resize: none;
+  letter-spacing: 1px;
+}
+
+.item textarea:hover {
+  overflow-y: scroll;
+
+}
+
+.item label {
+  background-color: rgba(89, 66, 67, 1.00);
+  color: rgb(197, 185, 185);
+  padding: 5px;
+  font-size: 12px;
+  text-align: right;
+  cursor: pointer;
+}
+
+#create {
+  display: flex;
+  margin-top: 50px;
+  border: 2px solid rgba(157, 158, 159, 1.00);
+  padding: 10px 12px;
+  flex-direction: column;
+}
+
+#create span {
+  background-color: rgba(55, 74, 84, 1.00);
+  color: white;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}
+
+#create form {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+#create form input {
+  border: 1px solid rgba(0, 0, 0, .3);
+  padding: 10px;
+  margin-right: 10px;
+  width: 100%;
+  background-color: rgb(233, 233, 233);
+  outline: none;
+}
+
+#create form a {
+  display: flex;
+  width: 80px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: rgb(158, 158, 158);
+  font-size: 14px;
+  cursor: pointer;
+}
